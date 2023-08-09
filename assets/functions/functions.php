@@ -240,3 +240,95 @@ function hpsAnggota($id)
     // kembalikan nilai hasil kueri
     return mysqli_affected_rows($koneksi);
 }
+
+// fungsi setor kas
+function setorKas($data)
+{
+    // ambil fungsi koneksi
+    $koneksi = koneksi();
+
+    // amil data yang diinputkan user
+    $idAnggota = htmlspecialchars($data["idAnggota"]);
+    $nominal = htmlspecialchars($data["nominal"]);
+    $bentuk = htmlspecialchars($data["bentuk"]);
+    $tglSetor = $data["tglSetor"];
+
+    // menghitung jumlah dana yang sudah masuk
+    $jmlhDana = mysqli_query($koneksi, "SELECT COUNT(statusAktif) as setatus from kas WHERE statusAktif = '1'");
+    // pecah data nya menjadi array assosiativ
+    $jmlDana = mysqli_fetch_assoc($jmlhDana);
+    // tampung kedalam variabel
+    $jumlahDana = $jmlDana["setatus"];
+
+    // jika jumlah dana kurang dari 500
+    if ($jumlahDana < 500) {
+        // maka lakukan inser data
+        $query = "INSERT INTO kas (idAnggota,nominal,bentuk,tglSetor) VALUES
+                    ($idAnggota,'$nominal','$bentuk','$tglSetor')
+        ";
+        mysqli_query($koneksi, $query);
+
+        // kembalikan nilai hasil kueri
+        return mysqli_affected_rows($koneksi);
+        exit;
+    } else {
+        // selain itu kembalikan nilai mines satu
+        $nilai = -1;
+        return $nilai;
+        exit;
+    }
+}
+
+// fungsi cari kas
+function cariKas($keyword)
+{
+    // lakukan kueri pencarian data berdasarkan keyword yang diinputkan user
+    $query = "SELECT * FROM vwkas WHERE 
+                namaAnggota LIKE '%$keyword%'
+                OR nominal LIKE '%$keyword%'
+                OR bentuk LIKE '%$keyword%'
+    ";
+    $result = query($query);
+
+    // kembalikan nilai result
+    return $result;
+}
+
+// fungsi cek kas
+function cekKas($keyword)
+{
+    // ambil fungsi koneksi
+    $koneksi = koneksi();
+
+    // lakukan kueri pencarian data berdasarkan keyword yang diinputkan user
+    $query = "SELECT * FROM vwkas WHERE 
+                namaAnggota LIKE '%$keyword%'
+                OR nominal LIKE '%$keyword%'
+                OR bentuk LIKE '%$keyword%'
+    ";
+    $result = mysqli_query($koneksi, $query);
+
+    // jika ketemu kecocokan data atau mengembalikan nilai lebih dari nol
+    if (mysqli_num_rows($result) > 0) {
+        // maka kembalikan nilai satu
+        return true;
+        exit;
+    } else {
+        // atau jika tidak ketemu maka kembalikan nilai nol
+        return false;
+        exit;
+    }
+}
+
+// fungsi hapus kas
+function hpsKas($id)
+{
+    // ambil fungsi koneksi
+    $koneksi = koneksi();
+
+    // lakukan kueri hapus data
+    mysqli_query($koneksi, "UPDATE kas SET statusAktif = '0' WHERE idKas = $id");
+
+    // kembalikan nilai hasil kueri
+    return mysqli_affected_rows($koneksi);
+}
