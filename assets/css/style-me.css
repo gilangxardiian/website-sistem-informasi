@@ -1,0 +1,163 @@
+.page-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* media query */
+@media only screen and (min-width: 0px) and (max-width: 576px) {
+    .judul {
+        font-size: 22px;
+        /* border: 1px solid red; */
+    }
+
+    .form-group label {
+        font-size: 12px;
+    }
+
+    .form-group input {
+        height: 30px;
+    }
+
+    .btn {
+        height: 35px;
+        font-size: 14px;
+    }
+
+    .gagal,
+    .sukses {
+        height: 40px;
+        font-size: 14px;
+        text-align: center;
+        line-height: 40px;
+    }
+
+    .card {
+        padding: 10px;
+    }
+}
+
+@media only screen and (min-width: 576px) and (max-width: 768px) {
+    .judul {
+        font-size: 22px;
+    }
+
+    .form-group label {
+        font-size: 12px;
+    }
+
+    .form-group input {
+        height: 30px;
+    }
+
+    .btn {
+        height: 35px;
+        font-size: 14px;
+    }
+
+    .gagal,
+    .sukses {
+        height: 40px;
+        font-size: 14px;
+        text-align: center;
+        line-height: 40px;
+    }
+
+    .card {
+        padding: 10px;
+    }
+}
+
+@media only screen and (min-width: 768px) and (max-width: 992px) {
+    .judul {
+        font-size: 28px;
+    }
+
+    .form-group label {
+        font-size: 14px;
+    }
+
+    .form-group input {
+        height: 35px;
+    }
+
+    .btn {
+        height: 38px;
+        font-size: 16px;
+    }
+
+    .gagal,
+    .sukses {
+        height: 43px;
+        font-size: 16px;
+        text-align: center;
+        line-height: 43px;
+    }
+
+    .card {
+        padding: 10px;
+    }
+}
+
+@media only screen and (min-width: 992px) and (max-width: 1200px) {
+    .judul {
+        font-size: 28px;
+    }
+
+    .form-group label {
+        font-size: 14px;
+    }
+
+    .form-group input {
+        height: 35px;
+    }
+
+    .btn {
+        height: 38px;
+        font-size: 16px;
+    }
+
+    .gagal,
+    .sukses {
+        height: 43px;
+        font-size: 16px;
+        text-align: center;
+        line-height: 43px;
+    }
+
+    .card {
+        padding: 10px;
+    }
+}
+
+@media only screen and (min-width: 1200px) {
+    .judul {
+        font-size: 28px;
+    }
+
+    .form-group label {
+        font-size: 14px;
+    }
+
+    .form-group input {
+        height: 35px;
+    }
+
+    .btn {
+        height: 38px;
+        font-size: 16px;
+    }
+
+    .gagal,
+    .sukses {
+        height: 43px;
+        font-size: 16px;
+        text-align: center;
+        line-height: 43px;
+    }
+
+    .card {
+        padding: 10px;
+    }
+}
