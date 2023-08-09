@@ -332,3 +332,105 @@ function hpsKas($id)
     // kembalikan nilai hasil kueri
     return mysqli_affected_rows($koneksi);
 }
+
+// fungsi catat pengeluaran
+function catatPengeluaran($data)
+{
+    // ambil fungsi koneksi
+    $koneksi = koneksi();
+
+    // amil data yang diinputkan user
+    $namaPengeluaran = htmlspecialchars($data["namaPengeluaran"]);
+    $nominal = htmlspecialchars($data["nominal"]);
+    $tglPengeluaran = $data["tglPengeluaran"];
+
+    // menghitung jumlah dana yang sudah masuk
+    $jmlhDanaIn = mysqli_query($koneksi, "SELECT SUM(nominal) as danaIn from kas WHERE statusAktif = '1'");
+    // pecah data nya menjadi array assosiativ
+    $jmlDanaIn = mysqli_fetch_assoc($jmlhDanaIn);
+    // tampung kedalam variabel
+    $jumlahDanaIn = $jmlDanaIn["danaIn"];
+
+    // menghitung jumlah dana yang sudah masuk
+    $jmlhDanaOut = mysqli_query($koneksi, "SELECT SUM(nominal) as danaOut from pengeluaran WHERE statusAktif = '1'");
+    // pecah data nya menjadi array assosiativ
+    $jmlDanaOut = mysqli_fetch_assoc($jmlhDanaOut);
+    // tampung kedalam variabel
+    $jumlahDanaOut = $jmlDanaOut["danaOut"];
+
+    // jika jumlah nominal pengeluaran lebih besar dari dana kas
+    if ($jumlahDanaOut >= $jumlahDanaIn or $nominal > $jmlDanaIn) {
+        // maka set variabel nilai dengan mines satu
+        $nilai = -1;
+
+        // kembalikan variabel nilai
+        return $nilai;
+        exit;
+    } else if ($jumlahDanaOut < $jumlahDanaIn or $nominal <= $jmlDanaIn) {
+        // atau jika nominal pengeluaran kurang dari dana kas maka lakukan insert data
+        $query = "INSERT INTO pengeluaran (namaPengeluaran,nominal,tglPengeluaran) VALUES
+                    ('$namaPengeluaran','$nominal','$tglPengeluaran')
+        ";
+        mysqli_query($koneksi, $query);
+
+        // kembalikan nilai hasil kueri
+        return mysqli_affected_rows($koneksi);
+        exit;
+    } else {
+        // selain itu kembalikan nilai nol
+        return false;
+        exit;
+    }
+}
+
+// fungsi cari pengeluaran
+function cariPengeluaran($keyword)
+{
+    // lakukan kueri pencarian data berdasarkan keyword yang diinputkan user
+    $query = "SELECT * FROM pengeluaran WHERE 
+                namaPengeluaran LIKE '%$keyword%'
+                OR nominal LIKE '%$keyword%' AND statusAktif = '1';
+    ";
+    $result = query($query);
+
+    // kembalikan nilai result
+    return $result;
+}
+
+// fungsi cek pengeluaran
+function cekPengeluaran($keyword)
+{
+    // ambil fungsi koneksi
+    $koneksi = koneksi();
+
+    // lakukan kueri pencarian data berdasarkan keyword yang diinputkan user
+    $query = "SELECT * FROM pengeluaran WHERE 
+                namaPengeluaran LIKE '%$keyword%'
+                OR nominal LIKE '%$keyword%' AND statusAktif = '1';
+    ";
+    $result = mysqli_query($koneksi, $query);
+
+    // jika ketemu kecocokan data atau mengembalikan nilai lebih dari nol
+    if (mysqli_num_rows($result) > 0) {
+        // maka kembalikan nilai satu
+        return true;
+        exit;
+    } else {
+        // atau jika tidak ketemu maka kembalikan nilai nol
+        return false;
+        exit;
+    }
+}
+
+// fungsi hapus pengeluaran
+function hpsPengeluaran($id)
+{
+    // ambil fungsi koneksi
+    $koneksi = koneksi();
+
+    // lakukan kueri hapus data
+    mysqli_query($koneksi, "UPDATE pengeluaran SET statusAktif = '0' WHERE idPengeluaran = $id");
+
+    // kembalikan nilai hasil kueri
+    return mysqli_affected_rows($koneksi);
+}
