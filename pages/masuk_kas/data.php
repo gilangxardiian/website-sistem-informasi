@@ -44,7 +44,7 @@ $danaKas = query("SELECT * FROM vwkas LIMIT $awalData, $jmlDataPerHlmn");
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" type="image/png" sizes="32x32" href="../../assets/img/logo/my-logo-32x32.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../../assets/img/logo/wallet-logo-32x32.png" />
 
     <title>Mankas · Data Kas</title>
 
@@ -64,7 +64,7 @@ $danaKas = query("SELECT * FROM vwkas LIMIT $awalData, $jmlDataPerHlmn");
         <!-- Sidebar -->
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="../../index.php">
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-solid fa-wallet"></i>
                 </div>
@@ -76,7 +76,7 @@ $danaKas = query("SELECT * FROM vwkas LIMIT $awalData, $jmlDataPerHlmn");
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
-                <a class="nav-link" href="index.php">
+                <a class="nav-link" href="../../index.php">
                     <i class="fas fa-fw fa-home"></i>
                     <span>Beranda</span></a>
             </li>

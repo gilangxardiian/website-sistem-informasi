@@ -20,7 +20,7 @@ if (!isset($_SESSION["login"])) {
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" type="image/png" sizes="32x32" href="assets/img/logo/my-logo-32x32.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/img/logo/wallet-logo-32x32.png" />
 
     <title>Mankas · Beranda</title>
 

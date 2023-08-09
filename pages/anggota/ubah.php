@@ -24,7 +24,7 @@ ini_set('display_errors', 0);
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" type="image/png" sizes="32x32" href="../../assets/img/logo/my-logo-32x32.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../../assets/img/logo/wallet-logo-32x32.png" />
 
     <title>Mankas · Ubah Anggota</title>
 
@@ -44,7 +44,7 @@ ini_set('display_errors', 0);
         <!-- Sidebar -->
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="../../index.php">
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-solid fa-wallet"></i>
                 </div>
@@ -56,7 +56,7 @@ ini_set('display_errors', 0);
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
-                <a class="nav-link" href="index.php">
+                <a class="nav-link" href="../../index.php">
                     <i class="fas fa-fw fa-home"></i>
                     <span>Beranda</span></a>
             </li>
@@ -77,8 +77,8 @@ ini_set('display_errors', 0);
                 </a>
                 <div id="collapseAnggota" class="collapse" aria-labelledby="headingAnggota" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="pages/anggota/tambah.php">Tambah Anggota</a>
-                        <a class="collapse-item" href="pages/anggota/data.php">Data Anggota</a>
+                        <a class="collapse-item" href="tambah.php">Tambah Anggota</a>
+                        <a class="collapse-item" href="data.php">Data Anggota</a>
                     </div>
                 </div>
             </li>
@@ -99,8 +99,8 @@ ini_set('display_errors', 0);
                 </a>
                 <div id="collapseSetorKas" class="collapse" aria-labelledby="headingSetorKas" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="../pages/masuk_kas/tambah.php">Setor Kas</a>
-                        <a class="collapse-item" href="../pages/masuk_kas/data.php">Data Kas</a>
+                        <a class="collapse-item" href="../masuk_kas/tambah.php">Setor Kas</a>
+                        <a class="collapse-item" href="../masuk_kas/data.php">Data Kas</a>
                     </div>
                 </div>
             </li>
@@ -113,8 +113,8 @@ ini_set('display_errors', 0);
                 </a>
                 <div id="collapsePengeluaranKas" class="collapse" aria-labelledby="headingPengeluaranKas" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="../pages/keluar_kas/tambah.php">Catat Pengeluaran</a>
-                        <a class="collapse-item" href="../pages/keluar_kas/data.php">Data Pengeluaran</a>
+                        <a class="collapse-item" href="../keluar_kas/tambah.php">Catat Pengeluaran</a>
+                        <a class="collapse-item" href="../keluar_kas/data.php">Data Pengeluaran</a>
                     </div>
                 </div>
             </li>
