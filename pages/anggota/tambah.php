@@ -1,10 +1,10 @@
 <?php
-// sambungkan file ini dengan file fungsi
-require "assets/functions/functions.php";
+// sambungkan file ini dengan file functions.php
+require '../../assets/functions/functions.php';
 
-// jika session login belum true
+// jika session login belum diset
 if (!isset($_SESSION["login"])) {
-    // maka kembalikan ke file login
+    // maka alihkan ke file login
     header("Location: pages/proses/login.php");
     exit;
 }
@@ -20,16 +20,16 @@ if (!isset($_SESSION["login"])) {
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" type="image/png" sizes="32x32" href="assets/img/logo/my-logo-32x32.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../../assets/img/logo/my-logo-32x32.png" />
 
-    <title>Mankas · Beranda</title>
+    <title>Mankas · Tambah Anggota</title>
 
     <!-- Custom fonts for this template-->
-    <link href="assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="../../assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
     <!-- Custom styles for this template-->
-    <link href="assets/css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="../../assets/css/sb-admin-2.min.css" rel="stylesheet">
 
 </head>
 
@@ -73,8 +73,8 @@ if (!isset($_SESSION["login"])) {
                 </a>
                 <div id="collapseAnggota" class="collapse" aria-labelledby="headingAnggota" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="pages/anggota/tambah.php">Tambah Anggota</a>
-                        <a class="collapse-item" href="pages/anggota/data.php">Data Anggota</a>
+                        <a class="collapse-item" href="tambah.php">Tambah Anggota</a>
+                        <a class="collapse-item" href="data.php">Data Anggota</a>
                     </div>
                 </div>
             </li>
@@ -95,8 +95,8 @@ if (!isset($_SESSION["login"])) {
                 </a>
                 <div id="collapseSetorKas" class="collapse" aria-labelledby="headingSetorKas" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="pages/masuk_kas/tambah.php">Setor Kas</a>
-                        <a class="collapse-item" href="pages/masuk_kas/data.php">Data Kas</a>
+                        <a class="collapse-item" href="../pages/masuk_kas/tambah.php">Setor Kas</a>
+                        <a class="collapse-item" href="../pages/masuk_kas/data.php">Data Kas</a>
                     </div>
                 </div>
             </li>
@@ -109,8 +109,8 @@ if (!isset($_SESSION["login"])) {
                 </a>
                 <div id="collapsePengeluaranKas" class="collapse" aria-labelledby="headingPengeluaranKas" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="pages/keluar_kas/tambah.php">Catat Pengeluaran</a>
-                        <a class="collapse-item" href="pages/keluar_kas/data.php">Data Pengeluaran</a>
+                        <a class="collapse-item" href="../pages/keluar_kas/tambah.php">Catat Pengeluaran</a>
+                        <a class="collapse-item" href="../pages/keluar_kas/data.php">Data Pengeluaran</a>
                     </div>
                 </div>
             </li>
@@ -149,13 +149,6 @@ if (!isset($_SESSION["login"])) {
                         // jadikan data yang telah diambil menjadi array
                         $infUsers = mysqli_fetch_assoc($idUsers);
 
-                        // mengambil jumlah Agnggota
-                        $jmlDonatur = jumlahAnggota();
-                        // mengambil jumlah kas
-                        $jmlKas = jumlahKas();
-                        // mengambil jumlah pengeluran
-                        $jmlPengeluraan = jumlahPengeluaran();
-
                         // jika ketemu dan sudah dipecah menjadi array assosiative
                         if ($infUsers) { ?>
                             <!-- Nav Item - User Information -->
@@ -187,73 +180,129 @@ if (!isset($_SESSION["login"])) {
                             </li>
                         <?php  } ?>
                     </ul>
-                    <!-- akhir topbar navbar -->
+                    <!-- akhir Topbar Navbar -->
                 </nav>
-                <!-- End of Topbar -->
+                <!-- akhir Topbar -->
 
-                <!-- Begin Page Content -->
+                <!-- page konten -->
                 <div class="container-fluid">
-                    <!-- page heading -->
-                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
+                    <!-- card shadow -->
+                    <div class="card shadow mb-4">
+                        <!-- card header - dropdown -->
+                        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                            <h6 class="m-0 font-weight-bold text-primary">Tambah Anggota :</h6>
+                        </div>
+                        <!-- card body -->
+                        <div class="card-body">
+                            <form action="" name="kirim" method="post">
+                                <!-- konten row -->
+                                <div class="row">
+                                    <div class="col-12 col-sm-12 col-md-6">
+                                        <div class="form-group">
+                                            <label for="namaAnggota">Nama Anggota :</label>
+                                            <input class="form-control form-control-sm" type="text" aria-label=".form-control-sm example" name="namaAnggota" id="namaAnggota" required />
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-sm-12 col-md-6">
+                                        <div class="form-group">
+                                            <label for="jenisKelamin">Jenis Kelamin :</label>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="jenisKelamin" id="laki-laki" value="laki-laki" required />
+                                                <label class="form-check-label mr-4" for="laki-laki">Laki-laki</label>
+                                                <input class="form-check-input" type="radio" name="jenisKelamin" id="perempuan" value="perempuan" required />
+                                                <label class="form-check-label" for="perempuan">Perempuan</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-sm-12 col-md-6">
+                                        <div class="form-group">
+                                            <label for="tglLahir">Tanggal Lahir :</label>
+                                            <input class="form-control form-control-sm" type="date" aria-label=".form-control-sm example" name="tglLahir" id="tglLahir" required />
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-sm-12 col-md-6">
+                                        <div class="form-group">
+                                            <label for="pekerjaan">Pekerjaan :</label>
+                                            <input class="form-control form-control-sm" type="text" aria-label=".form-control-sm example" name="pekerjaan" id="pekerjaan" required />
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-sm-12 col-md-6">
+                                        <div class="form-group">
+                                            <label for="telepon">Nomor Handphone :</label>
+                                            <input class="form-control form-control-sm" aria-label=".form-control-sm example" type="text" name="telepon" id="telepon" required />
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-sm-12 col-md-6">
+                                        <div class="form-group">
+                                            <label for="email">Email :</label>
+                                            <input class="form-control form-control-sm" aria-label=".form-control-sm example" type="email" name="email" id="email" required />
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-sm-12 col-md-6">
+                                        <div class="form-group">
+                                            <label for="alamat">Alamat :</label>
+                                            <input class="form-control form-control-sm" aria-label=".form-control-sm example" type="text" name="alamat" id="alamat" required />
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-sm-12 col-md-12">
+                                        <button type="submit" class="btn btn-primary btn-lg btn-block mt-4" name='kirim'>Kirim</button>
+                                    </div>
+                                </div>
+                                <!-- akhir konten row -->
+                            </form>
+                            <?php
+                            // cek apakah tombol submit sudah ditekan atau belum
+                            if (isset($_POST["kirim"])) { ?>
+                                <?php
+                                // jika fungsi mengembalikan nilai lebih dari nol
+                                if (tambahAnggota($_POST) > 0) { ?>
+                                    <div class="row">
+                                        <div class="col-12 col-sm-12 col-md-10 offset-md-1">
+                                            <div class="alert alert-primary mt-4" role="alert">
+                                                <p>
+                                                    <center>Berhasil Mengirim Data!</center>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <?php } else if (tambahAnggota($_POST) === -1) { ?>
+                                    <div class="row">
+                                        <div class="col-12 col-sm-12 col-md-10 offset-md-1">
+                                            <div class="alert alert-warning mt-4" role="alert">
+                                                <p>
+                                                    <center>Data Yang Anda Kirim Sudah Tersedia!</center>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <?php } else if (tambahAnggota($_POST) === -2) { ?>
+                                    <div class="row">
+                                        <div class="col-12 col-sm-12 col-md-10 offset-md-1">
+                                            <div class="alert alert-danger mt-4" role="alert">
+                                                <p>
+                                                    <center>Maaf Tidak Bisa!</center>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <?php } else { ?>
+                                    <div class="row">
+                                        <div class="col-12 col-sm-12 col-md-10 offset-md-1">
+                                            <div class="alert alert-danger mt-4" role="alert">
+                                                <p>
+                                                    <center>Gagal Mengirim Data!</center>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <?php } ?>
+                            <?php } ?>
+                        </div>
+                        <!-- akhir card body -->
                     </div>
-                    <!-- Content Row -->
-                    <div class="row">
-                        <!-- Jumlah Anggota Card Example -->
-                        <div class="mb-4 col-12 col-sm-12 col-md-6 col-lg-3">
-                            <div class="card border-left-warning shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                                Jumlah Anggota</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $jmlAnggota . " Orang" ?></div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-users fa-2x text-gray-300"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Jumlah Kas Card Example -->
-                        <div class="mb-4 col-12 col-sm-12 col-md-6 col-lg-3">
-                            <div class="card border-left-primary shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                                Jumlah Uang Kas</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?= "Rp" . $jmlKas; ?></div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-money-bill-wave fa-2x text-gray-300"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Jumlah Pengeluaran Card Example -->
-                        <div class="mb-4 col-12 col-sm-12 col-md-6 col-lg-3">
-                            <div class="card border-left-success shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                                Pengeluaran</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?= "Rp" . $jmlPengeluaran; ?></div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-money-bill-wave fa-2x text-gray-300"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- End Content Row -->
+                    <!-- akhir card shadow -->
                 </div>
-                <!-- /.container-fluid -->
+                <!-- akhir page konten -->
             </div>
             <!-- End of Main Content -->
 
@@ -290,28 +339,28 @@ if (!isset($_SESSION["login"])) {
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Batal</button>
-                    <a class="btn btn-primary" href="pages/proses/logout.php">Keluar</a>
+                    <a class="btn btn-primary" href="../proses/logout.php">Keluar</a>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Bootstrap core JavaScript-->
-    <script src="assets/vendor/jquery/jquery.min.js"></script>
-    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../../assets/vendor/jquery/jquery.min.js"></script>
+    <script src="../../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
     <!-- Core plugin JavaScript-->
-    <script src="assets/vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="../../assets/vendor/jquery-easing/jquery.easing.min.js"></script>
 
     <!-- Custom scripts for all pages-->
-    <script src="assets/js/sb-admin-2.min.js"></script>
+    <script src="../../assets/js/sb-admin-2.min.js"></script>
 
     <!-- Page level plugins -->
-    <script src="assets/vendor/chart.js/Chart.min.js"></script>
+    <script src="../../assets/vendor/chart.js/Chart.min.js"></script>
 
     <!-- Page level custom scripts -->
-    <script src="assets/js/demo/chart-area-demo.js"></script>
-    <script src="assets/js/demo/chart-pie-demo.js"></script>
+    <script src="../../assets/js/demo/chart-area-demo.js"></script>
+    <script src="../../assets/js/demo/chart-pie-demo.js"></script>
 </body>
 
 </html>

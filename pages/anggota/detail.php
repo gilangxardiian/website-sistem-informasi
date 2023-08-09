@@ -1,14 +1,18 @@
 <?php
-// sambungkan file ini dengan file fungsi
-require "assets/functions/functions.php";
+// sambungkan file ini dengan file functions.php
+require '../../assets/functions/functions.php';
 
-// jika session login belum true
+// jika session login belum diset
 if (!isset($_SESSION["login"])) {
-    // maka kembalikan ke file login
+    // maka alihkan ke file login
     header("Location: pages/proses/login.php");
     exit;
 }
 
+// Menonaktifkan semua jenis error
+error_reporting(0);
+// Menonaktifkan tampilan error
+ini_set('display_errors', 0);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -20,16 +24,16 @@ if (!isset($_SESSION["login"])) {
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" type="image/png" sizes="32x32" href="assets/img/logo/my-logo-32x32.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../../assets/img/logo/my-logo-32x32.png" />
 
-    <title>Mankas · Beranda</title>
+    <title>Infaqin · Detail Anggota</title>
 
     <!-- Custom fonts for this template-->
-    <link href="assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="../../assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
     <!-- Custom styles for this template-->
-    <link href="assets/css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="../../assets/css/sb-admin-2.min.css" rel="stylesheet">
 
 </head>
 
@@ -95,8 +99,8 @@ if (!isset($_SESSION["login"])) {
                 </a>
                 <div id="collapseSetorKas" class="collapse" aria-labelledby="headingSetorKas" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="pages/masuk_kas/tambah.php">Setor Kas</a>
-                        <a class="collapse-item" href="pages/masuk_kas/data.php">Data Kas</a>
+                        <a class="collapse-item" href="../pages/masuk_kas/tambah.php">Setor Kas</a>
+                        <a class="collapse-item" href="../pages/masuk_kas/data.php">Data Kas</a>
                     </div>
                 </div>
             </li>
@@ -109,8 +113,8 @@ if (!isset($_SESSION["login"])) {
                 </a>
                 <div id="collapsePengeluaranKas" class="collapse" aria-labelledby="headingPengeluaranKas" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="pages/keluar_kas/tambah.php">Catat Pengeluaran</a>
-                        <a class="collapse-item" href="pages/keluar_kas/data.php">Data Pengeluaran</a>
+                        <a class="collapse-item" href="../pages/keluar_kas/tambah.php">Catat Pengeluaran</a>
+                        <a class="collapse-item" href="../pages/keluar_kas/data.php">Data Pengeluaran</a>
                     </div>
                 </div>
             </li>
@@ -149,13 +153,6 @@ if (!isset($_SESSION["login"])) {
                         // jadikan data yang telah diambil menjadi array
                         $infUsers = mysqli_fetch_assoc($idUsers);
 
-                        // mengambil jumlah Agnggota
-                        $jmlDonatur = jumlahAnggota();
-                        // mengambil jumlah kas
-                        $jmlKas = jumlahKas();
-                        // mengambil jumlah pengeluran
-                        $jmlPengeluraan = jumlahPengeluaran();
-
                         // jika ketemu dan sudah dipecah menjadi array assosiative
                         if ($infUsers) { ?>
                             <!-- Nav Item - User Information -->
@@ -189,71 +186,130 @@ if (!isset($_SESSION["login"])) {
                     </ul>
                     <!-- akhir topbar navbar -->
                 </nav>
-                <!-- End of Topbar -->
+                <!-- akhir topbar -->
 
-                <!-- Begin Page Content -->
+                <!-- page konten -->
                 <div class="container-fluid">
-                    <!-- page heading -->
-                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
+                    <div class="card shadow mb-4">
+                        <!-- Card Header - Dropdown -->
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Info Detail Anggota :</h6>
+                        </div>
+                        <!-- Card Body -->
+                        <div class="card-body">
+                            <!-- Content Row -->
+                            <?php if (isset($_GET["id_anggota"])) { ?>
+                                <?php
+                                // ambil data yang ada di url dan tampung di dalam variabel id
+                                $id = ($_GET["id_anggota"]);
+
+                                // lakukan kueri mencari data berdasarkan id
+                                $anggotas = query("SELECT * FROM anggota WHERE idAnggota = $id")[0];
+
+                                // jika variabel id belum mendapatkan nilai dari url
+                                if ($id === $anggotas["idAnggota"]) { ?>
+                                    <div class="row">
+                                        <div class="col-12 col-sm-12 col-md-12 text-center">
+                                            <h2>Info Detail Anggota</h2>
+                                        </div>
+                                        <div class="col-12 col-sm-12 col-md-12 d-flex justify-content-center text-center align-items-center">
+                                            <table cellspacing="0" cellpadding="10">
+                                                <tr>
+                                                    <td style="text-align: end;">Nama Anggota</td>
+                                                    <td style="text-align: center;">:</td>
+                                                    <td style="text-align: start;"><?= $anggotas["namaAnggota"];  ?></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="text-align: end;">Jenis Kelamin</td>
+                                                    <td style="text-align: center;">:</td>
+                                                    <td style="text-align: start;"><?= $anggotas["jenisKelamin"];  ?></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="text-align: end;">Tanggal Lahir</td>
+                                                    <td style="text-align: center;">:</td>
+                                                    <td style="text-align: start;"><?= $anggotas["tglLahir"];  ?></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="text-align: end;">Pekerjaan</td>
+                                                    <td style="text-align: center;">:</td>
+                                                    <td style="text-align: start;"><?= $anggotas["pekerjaan"];  ?></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="text-align: end;">Nomor Handphone</td>
+                                                    <td style="text-align: center;">:</td>
+                                                    <td style="text-align: start;"><?= $anggotas["telepon"];  ?></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="text-align: end;">Email</td>
+                                                    <td style="text-align: center;">:</td>
+                                                    <td style="text-align: start;"><?= $anggotas["email"];  ?></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="text-align: end;">ALamat</td>
+                                                    <td style="text-align: center;">:</td>
+                                                    <td style="text-align: start;"><?= $anggotas["alamat"];  ?></td>
+                                                </tr>
+                                                <!-- menentukan umur -->
+                                                <?php
+                                                // ambil data tanggal lahir yang telah dikirimkan sebelumnya
+                                                $tanggalLahir = new DateTime($anggotas["tglLahir"]);
+
+                                                // set tanggal hari ini
+                                                $hriIni = new DateTime("today");
+
+                                                // menghitung selisih tahun antara dua tanggal
+                                                $tahun = $hriIni->diff($tanggalLahir)->y;
+                                                ?>
+                                                <!-- akhir menentukan umur -->
+                                                <tr>
+                                                    <td style="text-align: end;">Umur</td>
+                                                    <td style="text-align: center;">:</td>
+                                                    <td style="text-align: start;"><?= $tahun . " Tahun"; ?></td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                <?php } else { ?>
+                                    <div class="row">
+                                        <div class="col-12 col-sm-12 col-md-12">
+                                            <div class="alert alert-danger" role="alert">
+                                                <p>
+                                                    <center>Data Tidak Diketahui!</center>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <?php } ?>
+                                <div class="row">
+                                    <div class="col-md-12 d-flex justify-content-end">
+                                        <a href="data.php">
+                                            <button type="button" class="btn btn-info">Kembali Lagi</button>
+                                        </a>
+                                    </div>
+                                </div>
+                            <?php } else { ?>
+                                <div class="row">
+                                    <div class="col-12 col-sm-12 col-md-12">
+                                        <div class="alert alert-danger" role="alert">
+                                            <p>
+                                                <center>Data Tidak Diketahui!</center>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12 d-flex justify-content-end">
+                                        <a href="data.php">
+                                            <button type="button" class="btn btn-info">Kembali Lagi</button>
+                                        </a>
+                                    </div>
+                                </div>
+                            <?php } ?>
+                        </div>
+                        <!-- akhir card body -->
                     </div>
-                    <!-- Content Row -->
-                    <div class="row">
-                        <!-- Jumlah Anggota Card Example -->
-                        <div class="mb-4 col-12 col-sm-12 col-md-6 col-lg-3">
-                            <div class="card border-left-warning shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                                Jumlah Anggota</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $jmlAnggota . " Orang" ?></div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-users fa-2x text-gray-300"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Jumlah Kas Card Example -->
-                        <div class="mb-4 col-12 col-sm-12 col-md-6 col-lg-3">
-                            <div class="card border-left-primary shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                                Jumlah Uang Kas</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?= "Rp" . $jmlKas; ?></div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-money-bill-wave fa-2x text-gray-300"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Jumlah Pengeluaran Card Example -->
-                        <div class="mb-4 col-12 col-sm-12 col-md-6 col-lg-3">
-                            <div class="card border-left-success shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                                Pengeluaran</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?= "Rp" . $jmlPengeluaran; ?></div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-money-bill-wave fa-2x text-gray-300"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- End Content Row -->
                 </div>
-                <!-- /.container-fluid -->
+                <!-- akhir page konten -->
             </div>
             <!-- End of Main Content -->
 
@@ -290,28 +346,28 @@ if (!isset($_SESSION["login"])) {
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Batal</button>
-                    <a class="btn btn-primary" href="pages/proses/logout.php">Keluar</a>
+                    <a class="btn btn-primary" href="../proses/logout.php">Keluar</a>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Bootstrap core JavaScript-->
-    <script src="assets/vendor/jquery/jquery.min.js"></script>
-    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../../assets/vendor/jquery/jquery.min.js"></script>
+    <script src="../../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
     <!-- Core plugin JavaScript-->
-    <script src="assets/vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="../../assets/vendor/jquery-easing/jquery.easing.min.js"></script>
 
     <!-- Custom scripts for all pages-->
-    <script src="assets/js/sb-admin-2.min.js"></script>
+    <script src="../../assets/js/sb-admin-2.min.js"></script>
 
     <!-- Page level plugins -->
-    <script src="assets/vendor/chart.js/Chart.min.js"></script>
+    <script src="../../assets/vendor/chart.js/Chart.min.js"></script>
 
     <!-- Page level custom scripts -->
-    <script src="assets/js/demo/chart-area-demo.js"></script>
-    <script src="assets/js/demo/chart-pie-demo.js"></script>
+    <script src="../../assets/js/demo/chart-area-demo.js"></script>
+    <script src="../../assets/js/demo/chart-pie-demo.js"></script>
 </body>
 
 </html>
