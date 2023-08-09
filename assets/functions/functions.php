@@ -241,6 +241,31 @@ function hpsAnggota($id)
     return mysqli_affected_rows($koneksi);
 }
 
+// fungsi menghitung jumlah anggota
+function jumlahAnggota()
+{
+    // ambil fungsi koneksi
+    $koneksi = koneksi();
+
+    // lakukan kueri pencarian data
+    $jmlhAnggota = mysqli_query($koneksi, "SELECT COUNT(statusAktif) AS setatus  FROM anggota WHERE statusAktif = '1'");
+    // rubah menjadi array assosiative
+    $jmlAnggota = mysqli_fetch_assoc($jmlhAnggota);
+    // ambil isi dari kolom status
+    $jumlahAnggota = $jmlAnggota["setatus"];
+
+    // jika variabel jumlahAnggota tidak kosong
+    if ($jumlahAnggota != null) {
+        // maka kembalikan nilainya
+        return $jumlahAnggota;
+        exit;
+    } else {
+        // selain itu kembalikan nilai nol
+        return number_format(0);
+        exit;
+    }
+}
+
 // fungsi setor kas
 function setorKas($data)
 {
@@ -331,6 +356,41 @@ function hpsKas($id)
 
     // kembalikan nilai hasil kueri
     return mysqli_affected_rows($koneksi);
+}
+
+// fungsi menghitung jumlah kas
+function jumlahKas()
+{
+    // ambil fungsi koneksi
+    $koneksi = koneksi();
+
+    // lakukan kuer penjumlahan dana kas
+    $jmlhDanaKas = mysqli_query($koneksi, "SELECT SUM(nominal) AS danaKas FROM kas WHERE statusAktif = '1'");
+    // ubah menjadi array assosiative
+    $jmlDanaKas = mysqli_fetch_assoc($jmlhDanaKas);
+    // simpan kedalam variabel
+    $jumlahDanaKas = $jmlDanaKas["danaKas"];
+
+    // lakukan kuer penjumlahan dana keluar
+    $jmlhDanaKeluar = mysqli_query($koneksi, "SELECT SUM(nominal) AS danaKeluar FROM pengeluaran WHERE statusAktif = '1'");
+    // ubah menjadi array assosiative
+    $jmlDanaKeluar = mysqli_fetch_assoc($jmlhDanaKeluar);
+    // simpan kedalam variabel
+    $jumlahDanaKeluar = $jmlDanaKeluar["danaKeluar"];
+
+    // tampung hasil pengurangan kedalam variabel result
+    $result = $jumlahDanaKas - $jumlahDanaKeluar;
+
+    // jika variabel result tidak kosong
+    if ($result != null) {
+        // maka kembalikan nilainya
+        return number_format($result);
+        exit;
+    } else {
+        // selain itu kembalikan nilai nol
+        return number_format(0);
+        exit;
+    }
 }
 
 // fungsi catat pengeluaran
@@ -433,4 +493,29 @@ function hpsPengeluaran($id)
 
     // kembalikan nilai hasil kueri
     return mysqli_affected_rows($koneksi);
+}
+
+// fungsi jumlah pengeluaran
+function jumlahPengeluaran()
+{
+    // ambil fungsi koneksi
+    $koneksi = koneksi();
+
+    // lakukakn kueri penjumlahan dana pengeluaran
+    $jmlhDanaKeluar = mysqli_query($koneksi, "SELECT SUM(nominal) AS danaKeluar FROM pengeluaran WHERE statusAktif = '1'");
+    // ubah menjadi array assosiativ
+    $jmlDanaKeluar = mysqli_fetch_assoc($jmlhDanaKeluar);
+    // simpan nilainya kedalam variabel
+    $jumlahDanaKeluar = $jmlDanaKeluar["danaKeluar"];
+
+    // jika variabel jumlahDanaKeluar tidak kosong
+    if ($jumlahDanaKeluar != null) {
+        // maka tampilkan isi nya
+        return number_format($jumlahDanaKeluar);
+        exit;
+    } else {
+        // selain itu tampilkan nilai nol
+        return number_format(0);
+        exit;
+    }
 }
