@@ -5,7 +5,7 @@ require '../../assets/functions/functions.php';
 // jika session login belum diset
 if (!isset($_SESSION["login"])) {
     // maka alihkan ke file login
-    header("Location: pages/proses/login.php");
+    header("Location: ../proses/login.php");
     exit;
 }
 
@@ -159,19 +159,19 @@ ini_set('display_errors', 0);
                             <li class="nav-item dropdown no-arrow">
                                 <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?= $infUsers["namaPengguna"]; ?></span>
-                                    <img class="img-profile rounded-circle" src="assets/img/pengguna/<?= $infUsers["gambar"]; ?>">
+                                    <img class="img-profile rounded-circle" src="../../assets/img/pengguna/<?= $infUsers["gambar"]; ?>">
                                 </a>
                                 <!-- Dropdown - User Information -->
                                 <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                                    <a class="dropdown-item" href="pages/pengguna/profile.php">
+                                    <a class="dropdown-item" href="../pengguna/profile.php">
                                         <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                         Profil
                                     </a>
-                                    <a class="dropdown-item" href="pages/pengguna/ubah_profile.php?id_pengguna=<?= $infUsers["idPengguna"]; ?>">
+                                    <a class="dropdown-item" href="../pengguna/ubah_profile.php?id_pengguna=<?= $infUsers["idPengguna"]; ?>">
                                         <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                                         Pengaturan
                                     </a>
-                                    <a class="dropdown-item" href="pages/pengguna/ubah_password.php?id_pengguna=<?= $infUsers["idPengguna"]; ?>">
+                                    <a class="dropdown-item" href="../pengguna/ubah_password.php?id_pengguna=<?= $infUsers["idPengguna"]; ?>">
                                         <i class="fas fa-edit fa-sm fa-fw mr-2 text-gray-400"></i>
                                         Ganti Password
                                     </a>

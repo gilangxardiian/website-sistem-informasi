@@ -519,3 +519,146 @@ function jumlahPengeluaran()
         exit;
     }
 }
+
+// fungsi ubah profile
+function ubahProfil($data)
+{
+    // ambil fungsi koneksi
+    $koneksi = koneksi();
+
+    // ambil data dari super globals post
+    $id = $data["id_pengguna"];
+    $nama = htmlspecialchars($data["nama_pengguna"]);
+
+    // fungsi upload gambar tampung kedalam variabel gambar
+    $gambar = upload();
+
+    // jika fungsi gambar tidak mengembalikan nilai
+    if (!$gambar) {
+        // maka kembalikan nilai nol atau false
+        return false;
+    }
+
+    // lakukan kueri update data dari data yang di inputkan si user
+    $query = "UPDATE pengguna SET
+                namaPengguna = '$nama',
+                gambar = '$gambar'
+                WHERE idPengguna  = $id
+            ";
+    mysqli_query($koneksi, $query);
+
+    // lalu kembalikan nilai satu yang diperoleh dari fungsi dibawah ini
+    return mysqli_affected_rows($koneksi);
+}
+
+// fungsi upload foto
+function upload()
+{
+
+    $namaFile = $_FILES['gambar']['name'];
+    $ukuranFile = $_FILES['gambar']['size'];
+    $error = $_FILES['gambar']['error'];
+    $namaTmp = $_FILES['gambar']['tmp_name'];
+
+    // cek apakah tidak ada gambar yang di upload
+    if ($error === 4) {
+        // maka cetak
+        echo "<script>
+            alert('pilih gambar terlebih dahulu!');
+        </script>";
+
+        // kembalikan nilai false atau nol
+        return false;
+    }
+
+    // cek apakah yang diupload adalah gambar
+    $ekstensiGambarValid = ['jpg', 'jpeg', 'png'];
+
+    // ambil ekstensi dari gambar yang diupload
+    $ekstensiGambar = explode('.', $namaFile);
+    $ekstensiGambar = strtolower(end($ekstensiGambar));
+
+    // kalau yang diupload bukan gambar
+    if (!in_array($ekstensiGambar, $ekstensiGambarValid)) {
+        // maka cetak
+        echo "<script>
+            alert('yang anda upload bukan gambar!');
+        </script>";
+
+        // kembalikan nilai false atau nol
+        return false;
+    }
+
+    // cek jika ukuran nya terlalu besar
+    if ($ukuranFile > 1000000) {
+        // maka cetak
+        echo "<script>
+            alert('ukuran gambar terlalu besar!');
+        </script>";
+
+        // kembalikan nilai false atau nol
+        return false;
+    }
+
+    // generate nama gambar baru
+    $namaFileBaru = uniqid();
+
+    // rangkai nama file 
+    $namaFileBaru .= '.';
+    $namaFileBaru .= $ekstensiGambar;
+
+    // gambar siap diupload
+    move_uploaded_file($namaTmp, '../../assets/img/pengguna/' . $namaFileBaru);
+
+    // kembalikan nama file baru
+    return $namaFileBaru;
+}
+
+// fungsi ubah password
+function ubahPassword($data)
+{
+    // ambil fungsi koneksi
+    $koneksi = koneksi();
+
+    // ambil data dari super globals post
+    $id = $data["id_pengguna"];
+    $passLama = htmlspecialchars($data["passLama"]);
+
+    // lakukan kueri pencarian data
+    $row = query("SELECT * FROM pengguna WHERE idPengguna = $id")[0];
+
+    // jika password lama sama dengan data password
+    if (password_verify($passLama, $row['password'])) {
+        // maka ambil inputan password baru dari pengguna, lalu cocokan
+        $passBaru = htmlspecialchars($data["passBaru"]);
+        $confrmPass = htmlspecialchars($data["confrmPass"]);
+
+        // jika password barunya tidak sama
+        if ($passBaru != $confrmPass) {
+            // set variabel nilai dengan nilai mines satu
+            $nilai = -1;
+            // maka kembalikan nilai 
+            return $nilai;
+        } else {
+            // jika password barunya sama
+
+            // maka hancurkan session
+            $_SESSION = [];
+            session_unset();
+            session_destroy();
+
+            // lalu enkripsi password barunya
+            $password = password_hash($passBaru, PASSWORD_DEFAULT);
+
+            // lakukan kueri pengubahan data
+            $query = "UPDATE pengguna SET password = '$password' WHERE idPengguna = $id";
+            mysqli_query($koneksi, $query);
+
+            // jika berhasil maka dikembalikan nilai 1
+            return mysqli_affected_rows($koneksi);
+        }
+    } else {
+        // jika password lama tidak sama dengan data password, maka kembalikan nilai false atau nol
+        return false;
+    }
+}

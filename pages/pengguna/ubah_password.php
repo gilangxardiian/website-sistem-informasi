@@ -8,31 +8,6 @@ if (!isset($_SESSION["login"])) {
     header("Location: ../proses/login.php");
     exit;
 }
-
-//  -----> awal pagenation <-----
-// tentukan mau berapa data dalam satu halaman
-$jmlDataPerHlmn = 5;
-
-// lakukan kueri dan sekaligus menghitung total data yang ada di database
-$jumlahData = count(query("SELECT * FROM vwkas"));
-
-// rumus mencari jumlah halaman yaitu : jumlahData / jumlahDataPerhalaman
-// maka
-$jumlahHalaman = ceil($jumlahData / $jmlDataPerHlmn); // --> jumlah halaman = 25 / 5 hasilnya adalah 5, jika hasilnya pecahan maka akan dibulatkan keatas karena fungsi ceil
-
-// set halaman aktif
-$halamanAktif = (isset($_GET["halaman"])) ? $_GET["halaman"] : 1;
-
-// halaman = 1, awalData = 0
-// halaman = 2, awalData = 5
-// halaman = 3, awalData = 10
-// halaman = 4, awalData = 15
-
-$awalData = ($jmlDataPerHlmn * $halamanAktif) - $jmlDataPerHlmn; // awal data = 5 * 4 hasilnya 20, 20 - 5 hasilnya adalah 15
-//  -----> akhir pagenation <-----
-
-// lakukan kueri dan tampung kedalam variabel
-$danaKas = query("SELECT * FROM vwkas LIMIT $awalData, $jmlDataPerHlmn");
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -46,7 +21,7 @@ $danaKas = query("SELECT * FROM vwkas LIMIT $awalData, $jmlDataPerHlmn");
     <meta name="author" content="">
     <link rel="icon" type="image/png" sizes="32x32" href="../../assets/img/logo/wallet-logo-32x32.png" />
 
-    <title>Mankas · Data Kas</title>
+    <title>Infaqin · Ubah Password</title>
 
     <!-- Custom fonts for this template-->
     <link href="../../assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -119,8 +94,8 @@ $danaKas = query("SELECT * FROM vwkas LIMIT $awalData, $jmlDataPerHlmn");
                 </a>
                 <div id="collapseSetorKas" class="collapse" aria-labelledby="headingSetorKas" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="tambah.php">Setor Kas</a>
-                        <a class="collapse-item" href="data.php">Data Kas</a>
+                        <a class="collapse-item" href="../masuk_kas/tambah.php">Setor Kas</a>
+                        <a class="collapse-item" href="../masuk_kas/data.php">Data Kas</a>
                     </div>
                 </div>
             </li>
@@ -183,15 +158,15 @@ $danaKas = query("SELECT * FROM vwkas LIMIT $awalData, $jmlDataPerHlmn");
                                 </a>
                                 <!-- Dropdown - User Information -->
                                 <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                                    <a class="dropdown-item" href="../pengguna/profile.php">
+                                    <a class="dropdown-item" href="profile.php">
                                         <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                         Profil
                                     </a>
-                                    <a class="dropdown-item" href="../pengguna/ubah_profile.php?id_pengguna=<?= $infUsers["idPengguna"]; ?>">
+                                    <a class="dropdown-item" href="ubah_profile.php?id_pengguna=<?= $infUsers["idPengguna"]; ?>">
                                         <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                                         Pengaturan
                                     </a>
-                                    <a class="dropdown-item" href="../pengguna/ubah_password.php?id_pengguna=<?= $infUsers["idPengguna"]; ?>">
+                                    <a class="dropdown-item" href="ubah_password.php?id_pengguna=<?= $infUsers["idPengguna"]; ?>">
                                         <i class="fas fa-edit fa-sm fa-fw mr-2 text-gray-400"></i>
                                         Ganti Password
                                     </a>
@@ -210,143 +185,106 @@ $danaKas = query("SELECT * FROM vwkas LIMIT $awalData, $jmlDataPerHlmn");
 
                 <!-- page konten -->
                 <div class="container-fluid">
-                    <!-- card shadow -->
+                    <?php
+                    // ambil data yang ada di url dan tampung di dalam variabel id
+                    $id = ($_GET["id_pengguna"]);
+
+                    // lakukan kueri mencari data berdasarkan id
+                    $pengguna = query("SELECT * FROM pengguna WHERE idPengguna = $id")[0];
+                    ?>
                     <div class="card shadow mb-4">
-                        <!-- card header - dropdown -->
                         <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Data Kas :</h6>
+                            <h6 class="m-0 font-weight-bold text-primary">Ubah Password :</h6>
                         </div>
-                        <!-- card body -->
                         <div class="card-body">
-                            <div class="row">
-                                <div class="col-12">
-                                    <h7 class="m-0 font-weight-bold">Kapasitas Kas: <?= $kapasitas = 30; ?></h7>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-12 col-sm-12 col-md-4 d-md-flex align-items-md-center">
-                                    <a href="cetak_data.php?awalData=<?= $awalData; ?>&jmlDataPerHlmn=<?= $jmlDataPerHlmn; ?>" class="d-inline-block btn btn-sm btn-primary shadow-sm" target="blank">
-                                        <i class="fas fa-download fa-sm text-white-50"></i> Cetak Data
-                                    </a>
-                                </div>
-                                <div class="col-12 col-sm-12 col-md-8 d-md-flex justify-content-md-end">
-                                    <form class="form-inline my-2 my-lg-0" action="" method="post" name="cari">
-                                        <input class="form-control mr-sm-2" type="search" placeholder="Cari kas...." aria-label="Search" name="keyword" id="keyword" required>
-                                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit" name="cari" id="tombol-cari">Cari</button>
-                                    </form>
-                                </div>
-                            </div>
                             <?php
-                            // jika tombol hapus di tekan
-                            if (isset($_GET["hapus"])) { ?>
-                                <?php
-                                // maka cek data yang dikirimkan melalui url dan simpan ke dalam variabel pesan
-                                $pesan = addslashes($_GET["hapus"]);
-                                // jika data yang dikirim adalah sukses
-                                if ($pesan == "sukses") { ?>
+                            // jika variabel id belum mendapatkan nilai dari url
+                            if ($id === $pengguna["idPengguna"]) { ?>
+                                <form method="post" name="edit">
+                                    <input type="hidden" name="id_pengguna" value="<?= $pengguna["idPengguna"]; ?>" />
                                     <div class="row">
-                                        <div class="col-12 col-sm-12 col-md-10 offset-md-1">
-                                            <div class="alert alert-danger mt-4" role="alert">
-                                                <p>
-                                                    <center>Berhasil Menghapus Data!</center>
-                                                </p>
+                                        <div class="col-12 col-sm-12 col-md-6 col-lg-4">
+                                            <div class="form-group">
+                                                <label for="password">Password Lama</label>
+                                                <input class="form-control" type="password" placeholder="tuliskan password lama..." name="passLama" required />
                                             </div>
                                         </div>
                                     </div>
-                                <?php } else { ?>
                                     <div class="row">
-                                        <div class="col-12 col-sm-12 col-md-10 offset-md-1">
-                                            <div class="alert alert-danger mt-4" role="alert">
-                                                <p>
-                                                    <center>Gagal Menghapus Data!</center>
-                                                </p>
+                                        <div class="col-12 col-sm-12 col-md-6 col-lg-4">
+                                            <div class="form-group">
+                                                <label for="password">Password baru</label>
+                                                <input class="form-control" type="password" placeholder="tuliskan password baru..." name="passBaru" required />
                                             </div>
                                         </div>
                                     </div>
-                                <?php } ?>
-                            <?php } ?>
-                            <?php
-                            // cek apakah tombol cari sudah ditekan atau belum
-                            if (isset($_POST["cari"])) { ?>
-                                <?php
-                                // maka update variabel danaKas
-                                $danaKas = cariKas($_POST["keyword"]);
-                                // jika fungsi cek mengembalikan nilai lebih dari nol
-                                if (cekKas($_POST["keyword"]) > 0) { ?>
                                     <div class="row">
-                                        <div class="col-12 col-sm-12 col-md-10 offset-md-1">
-                                            <div class="alert alert-primary mt-4" role="alert">
-                                                <p>
-                                                    <center>Data Telah Ditemukan!</center>
-                                                </p>
+                                        <div class="col-12 col-sm-12 col-md-6 col-lg-4">
+                                            <div class="form-group">
+                                                <label for="password">Password baru</label>
+                                                <input class="form-control" type="password" placeholder="tuliskan pasword baru..." name="confrmPass" required />
                                             </div>
                                         </div>
                                     </div>
-                                <?php } else { ?>
                                     <div class="row">
-                                        <div class="col-12 col-sm-12 col-md-10 offset-md-1">
-                                            <div class="alert alert-danger mt-4" role="alert">
-                                                <p>
-                                                    <center>Data Tidak Ditemukan!</center>
-                                                </p>
-                                            </div>
+                                        <div class="col-12 col-sm-12 col-md-12">
+                                            <button type="submit" class="btn btn-info" name="edit">Ubah</button>
                                         </div>
                                     </div>
-                                <?php } ?>
-                            <?php } ?>
-                            <!-- daftar setor kas -->
-                            <div class="table-responsive service">
-                                <div id="container">
-                                    <table class="table table-bordered table-hover mt-3 text-nowrap css-serial">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col">No.</th>
-                                                <th scope="col">Nama Anggota</th>
-                                                <th scope="col">Nominal</th>
-                                                <th scope="col">Bentuk</th>
-                                                <th scope="col">Tanggal Setor</th>
-                                                <th scope="col">Aksi</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <!-- set nilai variabel i dengan angka satu -->
-                                            <?php $i = 1; ?>
-                                            <!-- mulai perulangan - lakukan perulangan pada data yang telah didapatkan dari hasil kueri -->
-                                            <?php foreach ($danaKas as $kas) : ?>
-                                                <tr>
-                                                    <td scope="row"><?= $i; ?></td>
-                                                    <td><?= $kas["namaAnggota"]; ?></td>
-                                                    <td><?= "Rp" . number_format($kas["nominal"]);  ?></td>
-                                                    <td><?= $kas["bentuk"]; ?></td>
-                                                    <td><?= $kas["tglSetor"]; ?></td>
-                                                    <td>&nbsp;
-                                                        <a href="detail.php?id_kas=<?= $kas["idKas"]; ?>">
-                                                            <button type="button" class="btn btn-info">Detail</button>
-                                                        </a>&nbsp;
-                                                        <a href="hapus.php?id_kas=<?= $kas["idKas"]; ?>">
-                                                            <button type="button" class="btn btn-danger">Hapus</button>
-                                                        </a>
-                                                    </td>
-                                                </tr>
-                                                <!-- pada perulangan data lakukan penambahan nilai variabel i -->
-                                                <?php $i++; ?>
-                                                <!-- selesai perulangan -->
-                                            <?php endforeach; ?>
-                                        </tbody>
-                                    </table>
+                                </form>
+                            <?php } else { ?>
+                                <div class="row">
+                                    <div class="col-12 col-sm-12 col-md-12">
+                                        <div class="alert alert-danger" role="alert">
+                                            <p>
+                                                <center>Data Tidak Diketahui!</center>
+                                            </p>
+                                        </div>
+                                    </div>
                                 </div>
-                                <nav aria-label="Page navigation example">
-                                    <ul class="pagination">
-                                        <?php for ($i = 1; $i <= $jumlahHalaman; $i++) : ?>
-                                            <li class="page-item">
-                                                <a class="page-link" href="?halaman=<?= $i; ?>"> <?= $i; ?> </a>
-                                            </li>
-                                        <?php endfor; ?>
-                                    </ul>
-                                </nav>
-                            </div>
-                            <!-- akhir daftar anggota -->
+                            <?php } ?>
                         </div>
+                        <?php
+                        // jika tombol ubah diklik
+                        if (isset($_POST["edit"])) { ?>
+                            <?php
+                            // cek apakah data berhasil di tambahkan atau tidak
+                            if (ubahPassword($_POST) > 0) { ?>
+                                <script>
+                                    window.location.href = '../proses/login.php?ubah=berhasil';
+                                </script>
+                            <?php } else if (ubahPassword($_POST) == 0) { ?>
+                                <div class="row">
+                                    <div class="col-12 col-sm-12 col-md-12">
+                                        <div class="alert alert-danger mt-4 ml-5" role="alert">
+                                            <p>
+                                                <center>Password Lama Anda Salah!</center>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            <?php } else if (ubahPassword($_POST) == -1) { ?>
+                                <div class="row">
+                                    <div class="col-12 col-sm-12 col-md-12">
+                                        <div class="alert alert-danger mt-4 ml-5" role="alert">
+                                            <p>
+                                                <center>Password Baru Tidak Sama!</center>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            <?php } else { ?>
+                                <div class="row">
+                                    <div class="col-12 col-sm-12 col-md-12">
+                                        <div class="alert alert-danger mt-4 ml-5" role="alert">
+                                            <p>
+                                                <center>Gagal Mengubah Data!</center>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            <?php } ?>
+                        <?php } ?>
                     </div>
                 </div>
                 <!-- akhir page konten -->

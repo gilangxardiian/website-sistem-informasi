@@ -5,7 +5,7 @@ require '../../assets/functions/functions.php';
 // jika session login belum diset
 if (!isset($_SESSION["login"])) {
     // maka alihkan ke file login
-    header("Location: pages/proses/login.php");
+    header("Location: ../proses/login.php");
     exit;
 }
 
