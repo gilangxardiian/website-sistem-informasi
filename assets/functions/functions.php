@@ -371,20 +371,10 @@ function jumlahKas()
     // simpan kedalam variabel
     $jumlahDanaKas = $jmlDanaKas["danaKas"];
 
-    // lakukan kuer penjumlahan dana keluar
-    $jmlhDanaKeluar = mysqli_query($koneksi, "SELECT SUM(nominal) AS danaKeluar FROM pengeluaran WHERE statusAktif = '1'");
-    // ubah menjadi array assosiative
-    $jmlDanaKeluar = mysqli_fetch_assoc($jmlhDanaKeluar);
-    // simpan kedalam variabel
-    $jumlahDanaKeluar = $jmlDanaKeluar["danaKeluar"];
-
-    // tampung hasil pengurangan kedalam variabel result
-    $result = $jumlahDanaKas - $jumlahDanaKeluar;
-
     // jika variabel result tidak kosong
-    if ($result != null) {
+    if ($jumlahDanaKas != null) {
         // maka kembalikan nilainya
-        return number_format($result);
+        return number_format($jumlahDanaKas);
         exit;
     } else {
         // selain itu kembalikan nilai nol
