@@ -485,8 +485,8 @@ function hpsPengeluaran($id)
     return mysqli_affected_rows($koneksi);
 }
 
-// fungsi jumlah pengeluaran
-function jumlahPengeluaran()
+// fungsi jumlah uang pengeluaran
+function jumlahUangPengeluaran()
 {
     // ambil fungsi koneksi
     $koneksi = koneksi();
@@ -502,6 +502,31 @@ function jumlahPengeluaran()
     if ($jumlahDanaKeluar != null) {
         // maka tampilkan isi nya
         return number_format($jumlahDanaKeluar);
+        exit;
+    } else {
+        // selain itu tampilkan nilai nol
+        return number_format(0);
+        exit;
+    }
+}
+
+// fungsi jumlah pengeluaran
+function jumlahPengeluaran()
+{
+    // ambil fungsi koneksi
+    $koneksi = koneksi();
+
+    // lakukakn kueri penjumlahan dana pengeluaran
+    $jmlhBelanja = mysqli_query($koneksi, "SELECT COUNT(idPengeluaran) AS belanja FROM pengeluaran WHERE statusAktif = '1'");
+    // ubah menjadi array assosiativ
+    $jmlBelanja = mysqli_fetch_assoc($jmlhBelanja);
+    // simpan nilainya kedalam variabel
+    $jumlahBelanja = $jmlBelanja["belanja"];
+
+    // jika variabel jumlahDanaKeluar tidak kosong
+    if ($jumlahBelanja != null) {
+        // maka tampilkan isi nya
+        return number_format($jumlahBelanja);
         exit;
     } else {
         // selain itu tampilkan nilai nol
