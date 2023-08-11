@@ -10,7 +10,7 @@
   <i>-Change Foto Dan Nama Admin</i><br>
   <i>-Change Password</i><br>
   
-Berikut adalah akun yang tersedia :
+<b>Berikut adalah akun yang tersedia :</b>
 - Username : admin
 - Password : 123
 
